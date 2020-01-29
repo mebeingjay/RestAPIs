@@ -17,6 +17,8 @@ app.set('view engine', 'html');
 app.get('/', function (req, res) {
     res.render('./index.html');
 });
+
+commonClass = module.exports = require('./classes/commonClass');
 var userRoutes = require('./routes/usersRoutes.js');
 
 app.use('/users', userRoutes);
