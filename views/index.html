@@ -1,8 +1,133 @@
 <html>
-    <head>
-        <title>Hello there</title>
-    </head>
-    <body>
-        <h1>Hii there</h1>
-    </body>
+
+<head>
+    <title>Application Login</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        function sendAPI(data, method, url) {
+
+            $.ajax({
+                type: method,
+                url: 'http://localhost:11000/' + url,
+                data: data,
+                success: function (data) {
+                    console.log("response of ", url, " is ", data);
+                    if (data) {
+                        if (url == 'users/register') {
+                            $('#registerDiv').hide();
+                            $('#loginDiv').show();
+                        } else if (url == 'users/login') {
+                            $('#loginDiv').hide();
+                            $('#dashboardDiv').show();
+                        }
+                    } else {
+                        alert("Something's going wrong in " + url);
+                    }
+                },
+                error: function (xhr, type, exception) {
+                    alert("Ajax error response type " + type);
+                }
+            });
+        }
+
+        function register() {
+            console.log("register button called.");
+
+            var reqData = {
+                email: document.getElementById("regEmail").value,
+                name: document.getElementById("regName").value,
+                password: document.getElementById("regPassword").value
+            }
+            console.log("reqData ", reqData);
+
+            sendAPI(reqData, 'POST', 'users/register');
+        }
+
+        function login() {
+            console.log("Login button called.");
+
+            var reqData = {
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            }
+            console.log("reqData ", reqData);
+
+            sendAPI(reqData, 'POST', 'users/login');
+        }
+    </script>
+
+</head>
+
+<body>
+    <center>
+        <div id="registerDiv">
+            <h1>Registration</h1>
+            <table cellpadding="10px" cellspacing="10px">
+                <tr>
+                    <td>
+                        Email
+                    </td>
+                    <td>
+                        <input type="email" id="regEmail" placeholder="Please enter Email">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        <input type="text" id="regName" placeholder="Please enter Name">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Password
+                    </td>
+                    <td>
+                        <input type="password" id="regPassword" placeholder="Please enter password">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <button id="registerButton" onclick="register()">Register</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="loginDiv" style="display: none;">
+            <h1>Login</h1>
+            <table cellpadding="10px" cellspacing="10px">
+                <tr>
+                    <td>
+                        Email
+                    </td>
+                    <td>
+                        <input type="email" id="email" placeholder="Please enter Email">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Password
+                    </td>
+                    <td>
+                        <input type="password" id="password" placeholder="Please enter password">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <button id="loginButton" onclick="login()">Login</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </center>
+</body>
+
 </html>
