@@ -6,20 +6,25 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         function sendAPI(data, method, url) {
+            var uid;
 
             $.ajax({
                 type: method,
-                url: 'http://localhost:11000/' + url,
+                url: 'http://localhost:3000/' + url,
                 data: data,
                 success: function (data) {
                     console.log("response of ", url, " is ", data);
                     if (data) {
                         if (url == 'users/register') {
                             $('#registerDiv').hide();
-                            $('#loginDiv').show();
+                            $('#dashboardDiv').show();
+                            // uid = data._id.toString();
+                            localStorage.setItem('uid', data._id.toString());
                         } else if (url == 'users/login') {
                             $('#loginDiv').hide();
                             $('#dashboardDiv').show();
+                            // uid = data._id.toString();
+                            localStorage.setItem('uid', data._id.toString());
                         }
                     } else {
                         alert("Something's going wrong in " + url);
@@ -55,13 +60,54 @@
 
             sendAPI(reqData, 'POST', 'users/login');
         }
+
+        function getAllMessages() {
+            var uid = localStorage.getItem('uid');
+            console.log("Here the local stored uid " + uid);
+
+            var reqData = {
+                uid: localStorage.getItem('uid')
+            }
+            console.log("reqData ", reqData);
+
+            sendAPI(reqData, 'POST', 'users/getAllMessages');
+        }
     </script>
 
 </head>
 
 <body>
     <center>
-        <div id="registerDiv">
+        <div id="loginDiv">
+            <h1>Login</h1>
+            <table cellpadding="10px" cellspacing="10px">
+                <tr>
+                    <td>
+                        Email
+                    </td>
+                    <td>
+                        <input type="email" id="email" placeholder="Please enter Email">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Password
+                    </td>
+                    <td>
+                        <input type="password" id="password" placeholder="Please enter password">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <button id="loginButton" onclick="login()">Login</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="registerDiv" style="display: none;">
             <h1>Registration</h1>
             <table cellpadding="10px" cellspacing="10px">
                 <tr>
@@ -99,34 +145,10 @@
             </table>
         </div>
 
-        <div id="loginDiv" style="display: none;">
-            <h1>Login</h1>
-            <table cellpadding="10px" cellspacing="10px">
-                <tr>
-                    <td>
-                        Email
-                    </td>
-                    <td>
-                        <input type="email" id="email" placeholder="Please enter Email">
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        Password
-                    </td>
-                    <td>
-                        <input type="password" id="password" placeholder="Please enter password">
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" align="center">
-                        <button id="loginButton" onclick="login()">Login</button>
-                    </td>
-                </tr>
-            </table>
+        <div id="dashboardDiv" style="display: none;">
+            <button onclick="getAllMessages()">Get Mails</button>
         </div>
+
     </center>
 </body>
 

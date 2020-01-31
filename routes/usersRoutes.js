@@ -1,23 +1,22 @@
-// var app = express();
 var router = express.Router();
 
 router.post('/register', function (req, res) {
 	console.log("/register API data ", req.body);
 
 	if (commonClass.validateParams(req.body.email, req.body.name, req.body.password)) {
-		db.collection('users').findOne({email: req.body.email}, function (error, response) {
+		db.collection('users').findOne({
+			email: req.body.email
+		}, function (error, response) {
 			if (error) {
 				console.log("/register user finding error ", error);
 				res.status(404).send('<h2>Something went wrong</h2>');
 				return;
-			}
-			else {
+			} else {
 				if (response) {
 					console.log("user is exist.");
 					res.status(404).send('<h2>404 Email is already existing</h2>');
 					return;
-				}
-				else {
+				} else {
 					console.log("new user");
 
 					db.collection('users').insertOne({
@@ -36,8 +35,7 @@ router.post('/register', function (req, res) {
 				}
 			}
 		});
-	}
-	else {
+	} else {
 		console.log("/register API data missing ", req.body);
 		res.status(404).send('<h2>Something went wrong</h2>');
 		return;
@@ -48,25 +46,24 @@ router.post('/login', function (req, res) {
 	console.log("/register API data ", req.body);
 
 	if (commonClass.validateParams(req.body.email, req.body.password)) {
-		db.collection('users').findOne({email: req.body.email}, function (error, response) {
+		db.collection('users').findOne({
+			email: req.body.email
+		}, function (error, response) {
 			if (error) {
 				console.log("/login user finding error ", error);
 				res.status(404).send('<h2>Something went wrong</h2>');
 				return;
-			}
-			else {
+			} else {
 				if (!response) {
 					console.log("/login user not exist ", error);
 					res.status(404).send('<h2>User is not exist</h2>');
 					return;
-				}
-				else {
+				} else {
 					if (response.password !== req.body.password) {
 						console.log("/login password wrong.");
 						res.status(404).send('<h2>Wrong Password</h2>');
 						return;
-					}
-					else {
+					} else {
 						console.log("/login password match.");
 						delete response.password;
 						res.status(200).send(response);
@@ -75,9 +72,126 @@ router.post('/login', function (req, res) {
 				}
 			}
 		});
-	}
-	else {
+	} else {
 		console.log("/login API data missing ", req.body);
+		res.status(404).send('<h2>Something went wrong</h2>');
+		return;
+	}
+});
+
+router.post('/getUserList', function (req, res) {
+	if (commonClass.validateParams(req.body.uid)) {
+		db.collection('users').find({}).project({
+			password: 0
+		}).sort({
+			name: 1
+		}).toArray(function (error, response) {
+			if (error) {
+				console.log("/getUserList users finding error ", error);
+				res.status(404).send('<h2>Something went wrong</h2>');
+				return;
+			} else {
+
+				response = response.filter(user => {
+					if (req.body.uid.toString() != user._id.toString())
+						return user;
+				});
+
+				console.log("/getUserList users finding response ", response);
+
+				res.status(200).send({
+					userList: response
+				});
+			}
+		})
+	} else {
+		console.log("/getUserList API data missing ", req.body);
+		res.status(404).send('<h2>Something went wrong</h2>');
+		return;
+	}
+});
+
+router.post('/sendMessage', function (req, res) {
+	if (commonClass.validateParams(req.body.uid, req.body.receiverId, req.body.message)) {
+		var condition = {
+			_id: {
+				$in: [ObjectId(req.body.uid.toString()), ObjectId(req.body.receiverId.toString())]
+			}
+		};
+
+		db.collection('users').find(condition).toArray(function (error, response) {
+			if (error || response.length < 2) {
+				console.log("/sendMessage sender and receiver finding data error ", error);
+				res.status(404).send('<h2>Something went wrong</h2>');
+				return;
+			} else {
+				console.log("/sendMessage sender and receiver finding data response ", response);
+
+				var senderName, receiverName;
+
+				if (response[0]._id.toString() === req.body.uid.toString()) {
+					senderName = response[0].name;
+					receiverName = response[1].name;
+				} else {
+					senderName = response[1].name;
+					receiverName = response[0].name;
+				}
+
+				console.log("\n/sendMessage senderName " + senderName + " receiverName " + receiverName);
+
+				var insertData = {
+					senderId: ObjectId(req.body.uid.toString()),
+					senderName: senderName,
+					receiverId: ObjectId(req.body.receiverId.toString()),
+					receiverName: receiverName,
+					message: req.body.message,
+					cd: new Date()
+				}
+
+				db.collection('user_messages').insertOne(insertData, function (err, resp) {
+					if (err || !resp.ops[0]) {
+						console.log("/sendMessage insert message error ", error);
+						res.status(404).send('<h2>Something went wrong</h2>');
+						return;
+					} else {
+						console.log("/sendMessage insert message response ", resp.ops[0]);
+						res.status(200).send(resp.ops[0]);
+					}
+				});
+			}
+		});
+	} else {
+		console.log("/sendMessage API data missing ", req.body);
+		res.status(404).send('<h2>Something went wrong</h2>');
+		return;
+	}
+});
+
+router.post('/getAllMessages', function (req, res) {
+	if (commonClass.validateParams(req.body.uid)) {
+		var condition = {
+			$or: [{
+				senderId: ObjectId(req.body.uid)
+			}, {
+				receiverId: ObjectId(req.body.uid)
+			}]
+		};
+
+		db.collection('user_messages').find(condition).sort({
+			cd: -1
+		}).toArray(function (error, response) {
+			if (error) {
+				console.log("/getAllMessages finding messages error ", error);
+				res.status(404).send('<h2>Something went wrong</h2>');
+				return;
+			}
+			console.log("/getAllMessages finding messages response ", response);
+			res.status(200).send({
+				messageList: response
+			});
+		});
+	} else {
+		console.log("/getAllMessages API data missing ", req.body);
 		res.status(404).send('<h2>Something went wrong</h2>');
 		return;
 	}

@@ -5,5 +5,5 @@
     "DBHOST": "localhost",
     "DBPORT": "27017",
     "IS_LIVE": false,
-    "SERVER_PORT": 11000
+    "SERVER_PORT": 3000
 }
