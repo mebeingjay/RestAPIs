@@ -18,7 +18,7 @@ app.set('view engine', 'html');
 app.use(express.static('views'));
 
 app.get('/', function (req, res) {
-    res.render('./home.html');
+    res.render('home.html');
 });
 
 // app.get('/', function (req, res) {
