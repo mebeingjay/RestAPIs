@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-// app.use(express.static('views'));
+app.use(express.static('views'));
 
 app.get('/', function (req, res) {
     res.render('./home.html');
