@@ -11,12 +11,14 @@ router.post('/register', function (req, res) {
 				console.log("/register user finding error ", error);
 				res.send({ error: 'Something went wrong', data: null });
 				return;
-			} else {
+			}
+			else {
 				if (response) {
 					console.log("user is exist.");
 					res.send({ error: 'Email address is already existed.' });
 					return;
-				} else {
+				}
+				else {
 					console.log("new user");
 
 					db.collection('users').insertOne({
@@ -31,11 +33,12 @@ router.post('/register', function (req, res) {
 						}
 						console.log("new user has been inserted ", resp.ops[0]);
 						res.send({ error: null, data: resp.ops[0] });
-					})
+					});
 				}
 			}
 		});
-	} else {
+	}
+	else {
 		console.log("/register API data missing ", req.body);
 		res.send({ error: 'Something went wrong' });
 		return;
@@ -53,18 +56,21 @@ router.post('/login', function (req, res) {
 				console.log("/login user finding error ", error);
 				res.send({ error: 'Something went wrong', data: null });
 				return;
-			} else {
+			}
+			else {
 				console.log("\n/login get data ", response)
 				if (!response) {
 					console.log("/login user not exist ");
 					res.send({ error: 'User not found', data: null });
 					return;
-				} else {
+				}
+				else {
 					if (response.password !== req.body.password) {
 						console.log("/login password wrong.");
 						res.send({ error: 'Password not match', data: null });
 						return;
-					} else {
+					}
+					else {
 						console.log("/login password match.");
 						delete response.password;
 						res.send({ error: null, data: response });
@@ -73,7 +79,8 @@ router.post('/login', function (req, res) {
 				}
 			}
 		});
-	} else {
+	}
+	else {
 		console.log("/login API data missing ", req.body);
 		res.send({ error: 'Something went wrong', data: null });
 		return;
@@ -82,32 +89,26 @@ router.post('/login', function (req, res) {
 
 router.post('/getUserList', function (req, res) {
 	if (commonClass.validateParams(req.body.uid)) {
-		db.collection('users').find({}).project({
-			password: 0
-		}).sort({
-			name: 1
-		}).toArray(function (error, response) {
+		db.collection('users').find({}).project({ password: 0 }).sort({ name: 1 }).toArray(function (error, response) {
 			if (error) {
 				console.log("/getUserList users finding error ", error);
-				res.send('<h2>Something went wrong</h2>');
+				res.send({ error: 'Something went wrong' });
 				return;
-			} else {
-
+			}
+			else {
 				response = response.filter(user => {
 					if (req.body.uid.toString() != user._id.toString())
 						return user;
 				});
 
 				console.log("/getUserList users finding response ", response);
-
-				res.send({
-					userList: response
-				});
+				res.send({ error: null, data: response });
 			}
-		})
-	} else {
+		});
+	}
+	else {
 		console.log("/getUserList API data missing ", req.body);
-		res.send('<h2>Something went wrong</h2>');
+		res.send({ error: 'Something went wrong' });
 		return;
 	}
 });
@@ -123,9 +124,10 @@ router.post('/sendMessage', function (req, res) {
 		db.collection('users').find(condition).toArray(function (error, response) {
 			if (error || response.length < 2) {
 				console.log("/sendMessage sender and receiver finding data error ", error);
-				res.send('<h2>Something went wrong</h2>');
+				res.send({ error: 'Something went wrong' });
 				return;
-			} else {
+			}
+			else {
 				console.log("/sendMessage sender and receiver finding data response ", response);
 
 				var senderName, receiverName;
@@ -133,7 +135,8 @@ router.post('/sendMessage', function (req, res) {
 				if (response[0]._id.toString() === req.body.uid.toString()) {
 					senderName = response[0].name;
 					receiverName = response[1].name;
-				} else {
+				}
+				else {
 					senderName = response[1].name;
 					receiverName = response[0].name;
 				}
@@ -152,18 +155,20 @@ router.post('/sendMessage', function (req, res) {
 				db.collection('user_messages').insertOne(insertData, function (err, resp) {
 					if (err || !resp.ops[0]) {
 						console.log("/sendMessage insert message error ", error);
-						res.send('<h2>Something went wrong</h2>');
+						res.send({ error: 'Something went wrong' });
 						return;
-					} else {
+					}
+					else {
 						console.log("/sendMessage insert message response ", resp.ops[0]);
-						res.send(resp.ops[0]);
+						res.send({ error: null, data: resp.ops[0] });
 					}
 				});
 			}
 		});
-	} else {
+	}
+	else {
 		console.log("/sendMessage API data missing ", req.body);
-		res.send('<h2>Something went wrong</h2>');
+		res.send({ error: 'Something went wrong' });
 		return;
 	}
 });
@@ -178,22 +183,19 @@ router.post('/getAllMessages', function (req, res) {
 			}]
 		};
 
-		db.collection('user_messages').find(condition).sort({
-			cd: -1
-		}).toArray(function (error, response) {
+		db.collection('user_messages').find(condition).sort({ cd: -1 }).toArray(function (error, response) {
 			if (error) {
 				console.log("/getAllMessages finding messages error ", error);
-				res.send('<h2>Something went wrong</h2>');
+				res.send({ error: 'Something went wrong' });
 				return;
 			}
 			console.log("/getAllMessages finding messages response ", response);
-			res.send({
-				messageList: response
-			});
+			res.send({ error: null, data: response });
 		});
-	} else {
+	}
+	else {
 		console.log("/getAllMessages API data missing ", req.body);
-		res.send('<h2>Something went wrong</h2>');
+		res.send({ error: 'Something went wrong' });
 		return;
 	}
 });
