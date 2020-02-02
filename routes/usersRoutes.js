@@ -43,7 +43,7 @@ router.post('/register', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
-	console.log("/register API data ", req.body);
+	console.log("/login API data ", req.body);
 
 	if (commonClass.validateParams(req.body.email, req.body.password)) {
 		db.collection('users').findOne({
