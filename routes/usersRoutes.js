@@ -9,12 +9,12 @@ router.post('/register', function (req, res) {
 		}, function (error, response) {
 			if (error) {
 				console.log("/register user finding error ", error);
-				res.status(404).send('<h2>Something went wrong</h2>');
+				res.send({ error: 'Something went wrong', data: null });
 				return;
 			} else {
 				if (response) {
 					console.log("user is exist.");
-					res.status(404).send('<h2>404 Email is already existing</h2>');
+					res.send({ error: 'Email address is already existed.' });
 					return;
 				} else {
 					console.log("new user");
@@ -26,18 +26,18 @@ router.post('/register', function (req, res) {
 					}, function (err, resp) {
 						if (err || !resp.ops[0]) {
 							console.log("/register user insert error ", err);
-							res.status(404).send('<h2>Something went wrong</h2>');
+							res.send({ error: 'Something went wrong' });
 							return;
 						}
 						console.log("new user has been inserted ", resp.ops[0]);
-						res.status(200).send(resp.ops[0]);
+						res.send({ error: null, data: resp.ops[0] });
 					})
 				}
 			}
 		});
 	} else {
 		console.log("/register API data missing ", req.body);
-		res.status(404).send('<h2>Something went wrong</h2>');
+		res.send({ error: 'Something went wrong' });
 		return;
 	}
 });
@@ -51,22 +51,22 @@ router.post('/login', function (req, res) {
 		}, function (error, response) {
 			if (error) {
 				console.log("/login user finding error ", error);
-				res.status(404).send('<h2>Something went wrong</h2>');
+				res.send({ error: 'Something went wrong', data: null });
 				return;
 			} else {
 				if (!response) {
 					console.log("/login user not exist ", error);
-					res.status(404).send('<h2>User is not exist</h2>');
+					res.send({ error: 'User not found', data: null });
 					return;
 				} else {
 					if (response.password !== req.body.password) {
 						console.log("/login password wrong.");
-						res.status(404).send('<h2>Wrong Password</h2>');
+						res.send({ error: 'Password not match', data: null });
 						return;
 					} else {
 						console.log("/login password match.");
 						delete response.password;
-						res.status(200).send(response);
+						res.send({ error: null, data: response });
 						return;
 					}
 				}
@@ -74,7 +74,7 @@ router.post('/login', function (req, res) {
 		});
 	} else {
 		console.log("/login API data missing ", req.body);
-		res.status(404).send('<h2>Something went wrong</h2>');
+		res.send({ error: 'Something went wrong', data: null });
 		return;
 	}
 });
@@ -88,7 +88,7 @@ router.post('/getUserList', function (req, res) {
 		}).toArray(function (error, response) {
 			if (error) {
 				console.log("/getUserList users finding error ", error);
-				res.status(404).send('<h2>Something went wrong</h2>');
+				res.send('<h2>Something went wrong</h2>');
 				return;
 			} else {
 
@@ -99,14 +99,14 @@ router.post('/getUserList', function (req, res) {
 
 				console.log("/getUserList users finding response ", response);
 
-				res.status(200).send({
+				res.send({
 					userList: response
 				});
 			}
 		})
 	} else {
 		console.log("/getUserList API data missing ", req.body);
-		res.status(404).send('<h2>Something went wrong</h2>');
+		res.send('<h2>Something went wrong</h2>');
 		return;
 	}
 });
@@ -122,7 +122,7 @@ router.post('/sendMessage', function (req, res) {
 		db.collection('users').find(condition).toArray(function (error, response) {
 			if (error || response.length < 2) {
 				console.log("/sendMessage sender and receiver finding data error ", error);
-				res.status(404).send('<h2>Something went wrong</h2>');
+				res.send('<h2>Something went wrong</h2>');
 				return;
 			} else {
 				console.log("/sendMessage sender and receiver finding data response ", response);
@@ -151,18 +151,18 @@ router.post('/sendMessage', function (req, res) {
 				db.collection('user_messages').insertOne(insertData, function (err, resp) {
 					if (err || !resp.ops[0]) {
 						console.log("/sendMessage insert message error ", error);
-						res.status(404).send('<h2>Something went wrong</h2>');
+						res.send('<h2>Something went wrong</h2>');
 						return;
 					} else {
 						console.log("/sendMessage insert message response ", resp.ops[0]);
-						res.status(200).send(resp.ops[0]);
+						res.send(resp.ops[0]);
 					}
 				});
 			}
 		});
 	} else {
 		console.log("/sendMessage API data missing ", req.body);
-		res.status(404).send('<h2>Something went wrong</h2>');
+		res.send('<h2>Something went wrong</h2>');
 		return;
 	}
 });
@@ -182,17 +182,17 @@ router.post('/getAllMessages', function (req, res) {
 		}).toArray(function (error, response) {
 			if (error) {
 				console.log("/getAllMessages finding messages error ", error);
-				res.status(404).send('<h2>Something went wrong</h2>');
+				res.send('<h2>Something went wrong</h2>');
 				return;
 			}
 			console.log("/getAllMessages finding messages response ", response);
-			res.status(200).send({
+			res.send({
 				messageList: response
 			});
 		});
 	} else {
 		console.log("/getAllMessages API data missing ", req.body);
-		res.status(404).send('<h2>Something went wrong</h2>');
+		res.send('<h2>Something went wrong</h2>');
 		return;
 	}
 });

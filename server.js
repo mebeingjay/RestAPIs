@@ -1,6 +1,8 @@
 require("dotenv").config();
 config = module.exports = require('./config.json');
 
+PORT = process.env.PORT || 3000;
+
 express = module.exports = require('express');
 app = module.exports = express();
 var http = require('http').Server(app);
@@ -13,10 +15,14 @@ app.use(bodyParser.json());
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-// app.use(express.static('views'));
+app.use(express.static('views'));
+
+// app.get('/', function (req, res) {
+//     res.render('./home.html');
+// });
 
 app.get('/', function (req, res) {
-    res.render('./index.html');
+    res.sendfile('home.html');
 });
 
 commonClass = module.exports = require('./classes/commonClass');
@@ -44,9 +50,9 @@ MongoClient.connect(url, function (err, database) {
     db.collection('user_data').remove();
 });
 
-http.listen(config.SERVER_PORT, function () {
+http.listen(PORT, function () {
     setTimeout(function () {
         console.log("\n------------------------------------------------------------------------------------------");
-        console.log('Server is properly working on port ' + config.SERVER_PORT);
+        console.log('Server is properly working on port ' + PORT);
     }, 2000);
 });
