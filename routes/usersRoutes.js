@@ -54,8 +54,9 @@ router.post('/login', function (req, res) {
 				res.send({ error: 'Something went wrong', data: null });
 				return;
 			} else {
+				console.log("\n/login get data ", response)
 				if (!response) {
-					console.log("/login user not exist ", error);
+					console.log("/login user not exist ");
 					res.send({ error: 'User not found', data: null });
 					return;
 				} else {
