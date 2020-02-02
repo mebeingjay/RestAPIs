@@ -15,15 +15,15 @@ app.use(bodyParser.json());
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(express.static('views'));
-
-// app.get('/', function (req, res) {
-//     res.render('./home.html');
-// });
+// app.use(express.static('views'));
 
 app.get('/', function (req, res) {
-    res.sendfile('home.html');
+    res.render('./home.html');
 });
+
+// app.get('/', function (req, res) {
+//     res.sendfile('home.html');
+// });
 
 commonClass = module.exports = require('./classes/commonClass');
 var userRoutes = require('./routes/usersRoutes.js');
