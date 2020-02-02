@@ -1,5 +1,5 @@
 require("dotenv").config();
-config = module.exports = require('./config.json');
+// config = module.exports = require('./config.json');
 
 PORT = process.env.PORT || 3000;
 
@@ -34,17 +34,17 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017";
 ObjectId = module.exports = require('mongodb').ObjectId;
 
-if (config.IS_LIVE)
-    url = "mongodb+srv://" + config.DBUSER + ":" + config.DBPWD + "@project-a3m4n.mongodb.net/test?retryWrites=true&w=majority";
+if (process.env.IS_LIVE == 1)
+    url = "mongodb+srv://" + process.env.DBUSER + ":" + process.env.DBPWD + "@project-a3m4n.mongodb.net/test?retryWrites=true&w=majority";
 
-// console.log("mongo URL ::: " + url);
+console.log("mongo URL ::: " + url);
 
 MongoClient.connect(url, function (err, database) {
     if (err) {
         console.log("error in mongo connection ", err);
         return;
     }
-    db = module.exports = database.db('Application');
+    db = module.exports = database.db(process.env.DBNAME);
     console.log('connected with database', err);
     db.collection('table_data').remove();
     db.collection('user_data').remove();
