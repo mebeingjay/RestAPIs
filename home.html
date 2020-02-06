@@ -69,14 +69,28 @@
                         }
                         else {
                             if (url == 'users/register') {
-                                $('#registerDiv').hide();
+                                $('#intro').hide();
+                                $('#header').hide();
+                                $('#about').hide();
+                                $('#text').hide();
+                                $('#team').hide();
+                                $('#contact').hide();
+                                $('#contact1').hide();
                                 $('#dashboard').show();
+
                                 // uid = data.data._id.toString();
                                 localStorage.setItem('uid', data.data._id.toString());
                             }
                             else if (url == 'users/login') {
-                                $('#loginDiv').hide();
+                                $('#intro').hide();
+                                $('#header').hide();
+                                $('#about').hide();
+                                $('#text').hide();
+                                $('#team').hide();
+                                $('#contact').hide();
+                                $('#contact1').hide();
                                 $('#dashboard').show();
+
                                 // uid = data.data._id.toString();
                                 localStorage.setItem('uid', data.data._id.toString());
                             }
