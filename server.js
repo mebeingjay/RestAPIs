@@ -22,6 +22,7 @@ app.use(express.static('views'));
 // });
 
 app.get('/join', function (req, res) {
+    console.log("\n/join has been called")
     res.sendfile('home.html');
 });
 
