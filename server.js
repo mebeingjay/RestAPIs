@@ -21,7 +21,7 @@ app.use(express.static('views'));
 //     res.render('home.html');
 // });
 
-app.get('/', function (req, res) {
+app.get('/join', function (req, res) {
     res.sendfile('home.html');
 });
 
