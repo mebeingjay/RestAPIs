@@ -53,6 +53,8 @@
         });
 
         function renderPage(pageName) {
+            console.log("renderPage function has been called " + pageName);
+
             $.ajax({
                 type: 'GET',
                 url: 'https://jb-chat-application.herokuapp.com/' + pageName,

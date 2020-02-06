@@ -88,6 +88,7 @@ router.post('/login', function (req, res) {
 });
 
 router.get('/dashboard', function (req, res) {
+	console.log("/dashboard API has been called");
 	res.render('dashboard.html');
 });
 
