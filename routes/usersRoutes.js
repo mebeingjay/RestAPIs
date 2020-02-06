@@ -87,6 +87,10 @@ router.post('/login', function (req, res) {
 	}
 });
 
+router.get('/dashboard', function (req, res) {
+	res.render('dashboard.html');
+});
+
 router.post('/getUserList', function (req, res) {
 	if (commonClass.validateParams(req.body.uid)) {
 		db.collection('users').find({}).project({ password: 0 }).sort({ name: 1 }).toArray(function (error, response) {

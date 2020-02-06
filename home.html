@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<!-- <html> -->
 
 <head>
     <meta charset="utf-8">
@@ -52,6 +52,19 @@
             });
         });
 
+        function renderPage(pageName) {
+            $.ajax({
+                type: 'GET',
+                url: 'https://jb-chat-application.herokuapp.com/' + pageName,
+                success: function (data) {
+                    console.log("Page has been loaded")
+                },
+                error: function (xhr, type, exception) {
+                    alert("Ajax error response type " + type);
+                }
+            });
+        }
+
         function sendAPI(data, method, url) {
             var uid;
 
@@ -72,16 +85,16 @@
                                 $('#registerDiv').hide();
                                 // $('#dashboardDiv').show();
                                 // uid = data.data._id.toString();
-
                                 localStorage.setItem('uid', data.data._id.toString());
                             }
                             else if (url == 'users/login') {
                                 $('#loginDiv').hide();
                                 // $('#dashboardDiv').show();
                                 // uid = data.data._id.toString();
-
                                 localStorage.setItem('uid', data.data._id.toString());
                             }
+
+                            renderPage('users/dashboard');
                         }
                     } else {
                         alert("Something's going wrong in " + url);
