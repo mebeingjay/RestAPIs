@@ -76,10 +76,11 @@
                                 $('#team').hide();
                                 $('#contact').hide();
                                 $('#contact1').hide();
+                                $('#headerbar').hide();
                                 $('#dashboard').show();
 
-                                // uid = data.data._id.toString();
-                                localStorage.setItem('uid', data.data._id.toString());
+                                uid = data.data._id.toString();
+                                // localStorage.setItem('uid', data.data._id.toString());
                             }
                             else if (url == 'users/login') {
                                 $('#intro').hide();
@@ -92,14 +93,13 @@
                                 $('#headerbar').hide();
                                 $('#dashboard').show();
 
-                                // uid = data.data._id.toString();
-                                localStorage.setItem('uid', data.data._id.toString());
+                                uid = data.data._id.toString();
+                                // localStorage.setItem('uid', data.data._id.toString());
                             }
                         }
                     } else {
                         alert("Something's going wrong in " + url);
                     }
-
                 },
                 error: function (xhr, type, exception) {
                     console.log("Something went wrong in API ", type);
@@ -490,7 +490,8 @@
     <!-- ---------------------------------------------------------------------------------------------------------------- -->
 
     <section id='dashboard' style="display: none;">
-        <div id="main" style="width: 97%; height: 550px; border: 3px solid black; background-color: #F3F3F3;">
+        <div id="main"
+            style="width: 97%; height: 550px; border: 3px solid black; background-color: #F3F3F3; padding-left: 1%;">
             <div id="peoples"
                 style="margin-top: 3%; width: 20%; height: 90%; float: left; border: 2px solid black; border-radius: 10px;">
                 <center>
