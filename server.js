@@ -21,8 +21,8 @@ app.use(express.static('views'));
 //     res.render('home.html');
 // });
 
-app.get('/join', function (req, res) {
-    console.log("\n/join has been called")
+app.get('/', function (req, res) {
+    console.log("\nFirst has been called")
     res.sendfile('home.html');
 });
 
