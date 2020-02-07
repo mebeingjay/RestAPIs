@@ -41,6 +41,7 @@
 
     <script>
         $(document).ready(function () {
+            event.preventDefault();
             $("#b2").click(function (e) {
                 $("#contact").hide();
                 $("#contact1").show();
@@ -83,6 +84,7 @@
                             alert(data.error);
                         }
                         else {
+                            event.preventDefault();
                             if (url == 'users/register') {
                                 uid = data.data._id.toString();
                                 // localStorage.setItem('uid', data.data._id.toString());
