@@ -66,6 +66,23 @@
                 // else
                 //     alert('Please add all Login require data');
             });
+
+            $("#b3").click(function () {
+                event.preventDefault();
+                console.log("register button called.");
+
+                var reqData = {
+                    email: document.getElementById("regEmail").value,
+                    name: document.getElementById("regName").value,
+                    password: document.getElementById("regPassword").value
+                }
+                console.log("reqData ", reqData);
+
+                if (reqData.email != '' && reqData.name != '' && reqData.password != '')
+                    sendAPI(reqData, 'POST', 'users/register');
+                // else
+                //     alert('Please add all Registration require data');
+            })
         });
 
         function dashboardOpen() {
@@ -461,8 +478,7 @@
                                     </div>
 
                                     <div class="text-center">
-                                        <button class="btn btn-primary btn-block" id="b3"
-                                            onclick="register()">Register</button>
+                                        <button class="btn btn-primary btn-block" id="b3">Register</button>
                                     </div>
                                 </div>
                             </form>
