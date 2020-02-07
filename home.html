@@ -41,7 +41,6 @@
 
     <script>
         $(document).ready(function () {
-            event.preventDefault();
             $("#b2").click(function (e) {
                 $("#contact").hide();
                 $("#contact1").show();
@@ -50,6 +49,22 @@
             $("#b4").click(function (e) {
                 $("#contact1").hide();
                 $("#contact").show();
+            });
+
+            $("#b1").click(function () {
+                event.preventDefault();
+                console.log("Login button called.");
+
+                var reqData = {
+                    email: document.getElementById("email").value,
+                    password: document.getElementById("password").value
+                }
+                console.log("reqData ", reqData);
+
+                if (reqData.email != '' && reqData.password != '')
+                    sendAPI(reqData, 'POST', 'users/login');
+                // else
+                //     alert('Please add all Login require data');
             });
         });
 
@@ -369,8 +384,7 @@
                                     </div>
 
                                     <div class="text-center">
-                                        <button class="btn btn-primary btn-block" id="b1"
-                                            onclick="login()">Login</button>
+                                        <button class="btn btn-primary btn-block" id="b1">Login</button>
                                     </div>
 
                                     <!-- <div class="text-center">
