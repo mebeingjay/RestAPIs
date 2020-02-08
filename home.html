@@ -102,8 +102,6 @@
         }
 
         function sendAPI(data, method, url) {
-
-
             $.ajax({
                 type: method,
                 url: 'https://jb-chat-application.herokuapp.com/' + url,
@@ -122,16 +120,30 @@
                                 uid = data.data._id.toString();
                                 name1 = data.data.name;
                                 // localStorage.setItem('uid', data.data._id.toString());
+                                document.getElementById('chat_list').innerHTML = "";
+                                document.getElementById('display_name').innerHTML = `<center>You: ` + name1 + `</center>`;
                                 dashboardOpen();
                             }
                             else if (url == 'users/login') {
                                 uid = data.data._id.toString();
                                 name1 = data.data.name;
                                 // localStorage.setItem('uid', data.data._id.toString());
+                                document.getElementById('chat_list').innerHTML = "";
+                                document.getElementById('display_name').innerHTML = `<center>You: ` + name1 + `</center>`;
                                 dashboardOpen();
                             }
-                            document.getElementById('chat_list').innerHTML = "";
-                            document.getElementById('display_name').innerHTML = `<center>You: ` + name1 + `</center>`;
+                            else if (url == 'users/getUserList') {
+                                var temp = '';
+                                console.log("getUserList:------", data);
+
+                                for (i = 0; i < data.data.length; i++) {
+                                    if (name != data.data[i]) {
+                                        // console.log("Send data:---",data);
+                                        temp += '<center><a href="#" style="text-decoration: none; color: black;" onclick="chat_private(\'' + data[i] + '\')">' + data.data[i] + '</a></center>';
+                                    }
+                                }
+                                document.getElementById('people_list').innerHTML = temp;
+                            }
                         }
                     } else {
                         alert("Something's going wrong in " + url);
@@ -174,6 +186,11 @@
                 sendAPI(reqData, 'POST', 'users/register');
             // else
             //     alert('Please add all Registration require data');
+        }
+
+        function getUserList() {
+            console.log("getUserList API has been called")
+            sendAPI(reqData, 'POST', 'users/getUserList');
         }
 
         function getAllMessages() {

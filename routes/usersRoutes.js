@@ -94,7 +94,7 @@ router.get('/dashboard', function (req, res) {
 
 router.post('/getUserList', function (req, res) {
 	if (commonClass.validateParams(req.body.uid)) {
-		db.collection('users').find({}).project({ password: 0 }).sort({ name: 1 }).toArray(function (error, response) {
+		db.collection('users').find({}).project({ name: 1 }).sort({ name: 1 }).toArray(function (error, response) {
 			if (error) {
 				console.log("/getUserList users finding error ", error);
 				res.send({ error: 'Something went wrong' });
