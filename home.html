@@ -191,7 +191,7 @@
         }
 
         function getUserList() {
-            console.log("getUserList API has been called")
+            console.log("getUserList API has been called " + uid);
             sendAPI({ uid: uid }, 'POST', 'users/getUserList');
         }
 
