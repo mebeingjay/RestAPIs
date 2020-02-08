@@ -192,7 +192,7 @@
 
         function getUserList() {
             console.log("getUserList API has been called")
-            sendAPI(reqData, 'POST', 'users/getUserList');
+            sendAPI({}, 'POST', 'users/getUserList');
         }
 
         function getAllMessages() {
