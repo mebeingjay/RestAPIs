@@ -5,6 +5,7 @@ PORT = process.env.PORT || 3000;
 
 express = module.exports = require('express');
 app = module.exports = express();
+var cors = require('cors');
 var http = require('http').Server(app);
 
 var bodyParser = require('body-parser');
@@ -12,6 +13,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+
+app.use(cors());
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
