@@ -519,7 +519,7 @@
     <!-- ---------------------------------------------------------------------------------------------------------------- -->
 
     <section id='dashboard' style="display: none; padding-left: 50px; margin-top: -6%;">
-        <div id="main" style="width: 97%; height: 650px; border: 3px solid white; background-color: #F3F3F3; ">
+        <div id="main" style="width: 97%; height: 600px; border: 3px solid white; background-color: #F3F3F3; ">
             <div id="peoples"
                 style="margin-top: 3%; width: 20%; height: 90%; float: left; border: 2px solid black; border-radius: 10px;">
                 <center>
@@ -528,7 +528,7 @@
                 <hr style="border-bottom: 2px solid green;">
 
                 <div id="people_list"
-                    style="margin-left: 1%; width: 100%; height: 88.4%; font-size: 22px; margin-top: 2%; overflow: scroll;text-decoration: none;">
+                    style="margin-left: 1%; width: 100%; height: 88.4%; font-size: 22px; margin-top: 2%; overflow: auto;text-decoration: none;">
                 </div>
             </div>
 
@@ -539,8 +539,8 @@
                 </center>
                 <hr style="border-bottom: 2px solid green;">
 
-                <div id="chat_list"
-                    style="margin-left: 1%; width: 98%; height: 86%; font-size: 25px; overflow: scroll;"></div>
+                <div id="chat_list" style="margin-left: 1%; width: 98%; height: 86%; font-size: 25px; overflow: auto;">
+                </div>
             </div>
 
             <!-- <div id="group"
@@ -570,8 +570,8 @@
                         placeholder="Enter messages for chat." id="chat_msg"></textarea>
                     <button id="send_btn" style="float: center; margin-left: 1%;" class="chat_btn"
                         onclick="sendMessage()">Send</button>
-                    <button id="group_btn" style="margin-right: -10%; width: 110px" class="chat_btn"
-                        onclick="GroupsendMessage()">Group Send</button>
+                    <!-- <button id="group_btn" style="margin-right: -10%; width: 110px" class="chat_btn"
+                        onclick="GroupsendMessage()">Group Send</button> -->
                 </div>
             </div>
 
