@@ -141,7 +141,7 @@
                                 for (i = 0; i < data.data.length; i++) {
                                     if (name != data.data[i]) {
                                         // console.log("Send data:---",data);
-                                        temp += '<center><a href="#" style="text-decoration: none; color: black;" onclick="chat_private(\'' + data.data[i].id + '\')">' + data.data[i].name + '</a></center>';
+                                        temp += '<center><a href="#" style="text-decoration: none; color: black;" onclick="chat_private(\'' + data.data[i].id + '\')">' + data.data[i].name + '</a></center><hr>';
                                     }
                                 }
                                 document.getElementById('people_list').innerHTML = temp;
@@ -205,6 +205,25 @@
             console.log("reqData ", reqData);
 
             sendAPI(reqData, 'POST', 'users/getAllMessages');
+        }
+
+        function chat_private(data) {
+            name1 = data;
+            current = data;
+
+            $('#send_btn').prop('disabled', false);
+            $('#group_btn').prop('disabled', true);
+
+            console.log("-----private chat ----->", name1);
+            document.getElementById('chat_list').innerHTML = "";
+
+            var data = {
+                receiver_name: name1,
+                sender_name: name,
+                en: 'msg_find1'
+            }
+            document.getElementById('display_name1').innerHTML = `<center>To: ` + name1 + `</center>`;
+            socket.emit('req', data)
         }
     </script>
 </head>
