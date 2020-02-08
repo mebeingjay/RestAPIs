@@ -141,7 +141,7 @@
                                 for (i = 0; i < data.data.length; i++) {
                                     if (name != data.data[i]) {
                                         // console.log("Send data:---",data);
-                                        temp += '<center><a href="#" style="text-decoration: none; color: black;" onclick="chat_private(\'' + data[i] + '\')">' + data.data[i] + '</a></center>';
+                                        temp += '<center><a href="#" style="text-decoration: none; color: black;" onclick="chat_private(\'' + data.data[i].id + '\')">' + data.data[i].name + '</a></center>';
                                     }
                                 }
                                 document.getElementById('people_list').innerHTML = temp;
