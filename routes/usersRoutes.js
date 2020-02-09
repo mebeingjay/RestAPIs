@@ -119,10 +119,10 @@ router.post('/getUserList', function (req, res) {
 });
 
 router.post('/sendMessage', function (req, res) {
-	if (commonClass.validateParams(req.body.uid, req.body.receiverId, req.body.message)) {
+	if (commonClass.validateParams(req.body.uid, req.body.ouid, req.body.message)) {
 		var condition = {
 			_id: {
-				$in: [ObjectId(req.body.uid.toString()), ObjectId(req.body.receiverId.toString())]
+				$in: [ObjectId(req.body.uid.toString()), ObjectId(req.body.ouid.toString())]
 			}
 		};
 
@@ -151,7 +151,7 @@ router.post('/sendMessage', function (req, res) {
 				var insertData = {
 					senderId: ObjectId(req.body.uid.toString()),
 					senderName: senderName,
-					receiverId: ObjectId(req.body.receiverId.toString()),
+					receiverId: ObjectId(req.body.ouid.toString()),
 					receiverName: receiverName,
 					message: req.body.message,
 					cd: new Date()
@@ -200,6 +200,39 @@ router.post('/getAllMessages', function (req, res) {
 	}
 	else {
 		console.log("/getAllMessages API data missing ", req.body);
+		res.send({ error: 'Something went wrong' });
+		return;
+	}
+});
+
+router.post('/getPersonalMessages', function (req, res) {
+	if (commonClass.validateParams(req.body.uid, req.body.ouid)) {
+		var condition = {
+			$or: [
+				{ $and: [{ senderId: ObjectId(req.body.uid) }, { receiverId: ObjectId(req.body.ouid) }] },
+				{ $and: [{ senderId: ObjectId(req.body.ouid) }, { receiverId: ObjectId(req.body.uid) }] }
+			]
+		};
+
+		db.collection('user_messages').find(condition).sort({ cd: 1 }).toArray(function (error, response) {
+			if (error) {
+				console.log("/getPersonalMessages finding messages error ", error);
+				res.send({ error: 'Something went wrong' });
+				return;
+			}
+			else {
+				console.log("/getPersonalMessages finding messages response ", response);
+
+				for (var i = 0; i < response.length; i++) {
+					var d = response[i].cd;
+					response[i].time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+				}
+				res.send({ error: null, data: response });
+			}
+		});
+	}
+	else {
+		console.log("/getPersonalMessages API data missing ", req.body);
 		res.send({ error: 'Something went wrong' });
 		return;
 	}

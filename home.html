@@ -40,7 +40,7 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     <script>
-        var uid, name1;
+        var uid, ouid, name1, name2, people;
         $(document).ready(function () {
             $("#b2").click(function (e) {
                 $("#contact").hide();
@@ -101,13 +101,27 @@
             $('#dashboard').show();
         }
 
+        function setMessageDivision(data) {
+            document.getElementById('chat_list').innerHTML = "";
+
+            for (var i = 0; i < data.length; i++) {
+                if (name1 != data[i].senderName) {
+                    document.getElementById('chat_list').innerHTML += `<div style="float : left">` + data[i].message + `<sub>&nbsp&nbsp(` + data[i].time + `)</sub></div><br><hr>`;
+                }
+
+                else {
+                    document.getElementById('chat_list').innerHTML += `<div style="float : right">` + data[i].message + `<sub>&nbsp&nbsp(` + data[i].time + `)</sub></div><br><hr>`;
+                }
+            }
+        }
+
         function sendAPI(data, method, url) {
             $.ajax({
                 type: method,
                 url: 'https://jb-chat-application.herokuapp.com/' + url,
+                // url: 'http://localhost:3000/' + url,
                 data: data,
                 success: function (data) {
-
                     console.log("\nResponse of ", url, " is ", data);
 
                     if (data) {
@@ -122,6 +136,10 @@
                                 // localStorage.setItem('uid', data.data._id.toString());
                                 document.getElementById('chat_list').innerHTML = "";
                                 document.getElementById('display_name').innerHTML = `<center>You: ` + name1 + `</center>`;
+
+                                $('#send_btn').prop('disabled', true);
+                                $('#autoload_btn').prop('disabled', true);
+
                                 dashboardOpen();
                                 getUserList({}, 'POST', 'users/getUserList');
                             }
@@ -131,23 +149,36 @@
                                 // localStorage.setItem('uid', data.data._id.toString());
                                 document.getElementById('chat_list').innerHTML = "";
                                 document.getElementById('display_name').innerHTML = `<center>You: ` + name1 + `</center>`;
+
+                                $('#send_btn').prop('disabled', true);
+                                $('#autoload_btn').prop('disabled', true);
+
                                 dashboardOpen();
                                 getUserList({}, 'POST', 'users/getUserList');
                             }
                             else if (url == 'users/getUserList') {
                                 var temp = '';
-                                console.log("getUserList:------", data);
+                                // console.log("getUserList:------", data);
+                                people = data.data;
 
                                 for (i = 0; i < data.data.length; i++) {
-                                    if (name != data.data[i]) {
+                                    if (uid != data.data[i].uid) {
                                         // console.log("Send data:---",data);
-                                        temp += '<center><a href="#" style="text-decoration: none; color: black;" onclick="chat_private(\'' + data.data[i].id + '\')">' + data.data[i].name + '</a></center><hr>';
+                                        temp += '<center><a href="#" style="text-decoration: none; color: black;" onclick="chatPrivate(\'' + data.data[i]._id + '\')">' + data.data[i].name + '</a></center><hr>';
                                     }
                                 }
                                 document.getElementById('people_list').innerHTML = temp;
                             }
+                            else if (url == 'users/getPersonalMessages') {
+                                console.log("users/getPersonalMessages url response ", data.data);
+                                setMessageDivision(data.data);
+                            }
+                            else if (url == 'users/sendMessage') {
+                                chatPrivate(data.data.receiverId);
+                            }
                         }
-                    } else {
+                    }
+                    else {
                         alert("Something's going wrong in " + url);
                     }
                 },
@@ -207,23 +238,51 @@
             sendAPI(reqData, 'POST', 'users/getAllMessages');
         }
 
-        function chat_private(data) {
-            name1 = data;
-            current = data;
+        function chatPrivate(data) {
+            console.log("-----private chat ----->", data);
+            ouid = data.toString();
 
             $('#send_btn').prop('disabled', false);
-            $('#group_btn').prop('disabled', true);
+            $('#autoload_btn').prop('disabled', false);
 
-            console.log("-----private chat ----->", name1);
             document.getElementById('chat_list').innerHTML = "";
 
-            var data = {
-                receiver_name: name1,
-                sender_name: name,
-                en: 'msg_find1'
+            for (var i = 0; i < people.length; i++) {
+                if (data == people[i]._id.toString())
+                    name2 = people[i].name
             }
-            document.getElementById('display_name1').innerHTML = `<center>To: ` + name1 + `</center>`;
-            socket.emit('req', data)
+
+            var reqData = {
+                uid: uid,
+                ouid: ouid
+            }
+            document.getElementById('display_name1').innerHTML = `<center>To: ` + name2 + `</center>`;
+            if (reqData.uid != '' && reqData.ouid != '')
+                sendAPI(reqData, 'POST', 'users/getPersonalMessages');
+        }
+
+        function sendMessage() {
+            var reqData = {
+                uid: uid,
+                ouid: ouid,
+                message: document.getElementById("chat_msg").value
+            }
+            console.log("reqData ", reqData);
+
+            if (reqData.uid != '' && reqData.ouid != '' && reqData.message != '')
+                sendAPI(reqData, 'POST', 'users/sendMessage');
+        }
+
+        function autoMessageLoad() {
+            var reqData = {
+                uid: uid,
+                ouid: ouid
+            }
+            if (reqData.uid != '' && reqData.ouid != '') {
+                setInterval(function () {
+                    sendAPI(reqData, 'POST', 'users/getPersonalMessages');
+                }, 10000);
+            }
         }
     </script>
 </head>
@@ -572,7 +631,7 @@
                 <hr style="border-bottom: 2px solid green;">
 
                 <div id="people_list"
-                    style="margin-left: 1%; width: 98%; height: 88.4%; font-size: 22px; margin-top: 2%; overflow: auto;text-decoration: none;">
+                    style="margin-left: 1%; width: 98%; height: 75.4%; font-size: 22px; margin-top: 2%; overflow: auto;text-decoration: none;">
                 </div>
             </div>
 
@@ -583,7 +642,7 @@
                 </center>
                 <hr style="border-bottom: 2px solid green;">
 
-                <div id="chat_list" style="margin-left: 1%; width: 98%; height: 86%; font-size: 25px; overflow: auto;">
+                <div id="chat_list" style="margin-left: 1%; width: 98%; height: 75%; font-size: 25px; overflow: auto;">
                 </div>
             </div>
 
@@ -614,6 +673,8 @@
                         placeholder="Enter messages for chat." id="chat_msg"></textarea>
                     <button id="send_btn" style="float: center; margin-left: 1%;" class="chat_btn"
                         onclick="sendMessage()">Send</button>
+                    <button id="autoload_btn" style="float: center; margin-left: 1%;" class="chat_btn"
+                        onclick="autoMessageLoad()">Auto Load</button>
                 </div>
             </div>
 

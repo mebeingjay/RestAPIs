@@ -50,8 +50,6 @@ MongoClient.connect(url, function (err, database) {
     }
     db = module.exports = database.db(process.env.DBNAME);
     console.log('connected with database', err);
-    db.collection('table_data').remove();
-    db.collection('user_data').remove();
 });
 
 http.listen(PORT, function () {
