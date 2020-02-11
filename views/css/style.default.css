@@ -88,7 +88,7 @@ INTRO
 .intro h1,
 .intro h2,
 .intro h3 {
-  color: #fff;
+  color: rgb(43, 38, 38);
 }
 .intro span.bold {
   font-weight: 700;
