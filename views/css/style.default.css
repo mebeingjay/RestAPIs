@@ -88,7 +88,7 @@ INTRO
 .intro h1,
 .intro h2,
 .intro h3 {
-  color: rgb(43, 38, 38);
+  color: #fff;
 }
 .intro span.bold {
   font-weight: 700;
@@ -159,7 +159,7 @@ INTRO
   top: 0;
   width: 100%;
   height: 100%;
-  /* background: #5091da; */
+  background: #0f1011;
   opacity: 0.93;
   filter: alpha(opacity=93);
   z-index: 2;
