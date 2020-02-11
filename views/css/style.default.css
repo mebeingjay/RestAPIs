@@ -144,6 +144,8 @@ INTRO
 }
 .intro.image-background {
   background: url('../img/startup-room.jpg') center center no-repeat;
+  background-attachment: fixed;
+  position: relative;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
