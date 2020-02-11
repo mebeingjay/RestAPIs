@@ -118,8 +118,8 @@
         function sendAPI(data, method, url) {
             $.ajax({
                 type: method,
-                // url: 'https://jb-chat-application.herokuapp.com/' + url,
-                url: 'http://localhost:3000/' + url,
+                url: 'https://jb-chat-application.herokuapp.com/' + url,
+                // url: 'http://localhost:3000/' + url,
                 data: data,
                 success: function (data) {
                     console.log("\nResponse of ", url, " is ", data);
@@ -446,35 +446,30 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <center>
+                    <h2 class="heading">Our team</h2>
+                    <div class="row"></div>
+                    <!-- team-member-->
 
-                        <h2 class="heading">Our team</h2>
-                        <div class="row"></div>
-                        <!-- team-member-->
-
-                        <div class="col-md-3 col-sm-6">
-                            <div class="team-member">
-                                <div class="image"><a href="#"><img src="img/admin.jpg" alt=""
-                                            class="img-responsive"></a>
-                                </div>
-                                <h3><a href="#">Vinita Suthar</a></h3>
-                                <p class="role">Founder</p>
-                                <div class="social">
-                                    <a href="#" class="external facebook" data-animate-hover="pulse"><i
-                                            class="fa fa-facebook"></i></a>
-                                    <a href="#" class="external gplus" data-animate-hover="pulse"><i
-                                            class="fa fa-google-plus"></i></a>
-                                    <a href="#" class="external twitter" data-animate-hover="pulse"><i
-                                            class="fa fa-twitter"></i></a>
-                                    <a href="#" class="email" data-animate-hover="pulse"><i
-                                            class="fa fa-envelope"></i></a>
-                                </div>
-                                <div class="text">
-                                    <p>Website developer.</p>
-                                </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="team-member">
+                            <div class="image"><a href="#"><img src="img/admin.jpg" alt="" class="img-responsive"></a>
+                            </div>
+                            <h3><a href="#">Vinita Suthar</a></h3>
+                            <p class="role">Founder</p>
+                            <div class="social">
+                                <a href="#" class="external facebook" data-animate-hover="pulse"><i
+                                        class="fa fa-facebook"></i></a>
+                                <a href="#" class="external gplus" data-animate-hover="pulse"><i
+                                        class="fa fa-google-plus"></i></a>
+                                <a href="#" class="external twitter" data-animate-hover="pulse"><i
+                                        class="fa fa-twitter"></i></a>
+                                <a href="#" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
+                            </div>
+                            <div class="text">
+                                <p>Website developer.</p>
                             </div>
                         </div>
-                    </center>
+                    </div>
                 </div>
             </div>
         </div>
