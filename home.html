@@ -118,8 +118,8 @@
         function sendAPI(data, method, url) {
             $.ajax({
                 type: method,
-                url: 'https://jb-chat-application.herokuapp.com/' + url,
-                // url: 'http://localhost:3000/' + url,
+                // url: 'https://jb-chat-application.herokuapp.com/' + url,
+                url: 'http://localhost:3000/' + url,
                 data: data,
                 success: function (data) {
                     console.log("\nResponse of ", url, " is ", data);
@@ -353,7 +353,7 @@
                         TV, and the ear to ear smiles on your friend's faces when they communicate it.</p>
                 </div>
                 <div class="col-md-6 margin-bottom">
-                    <p><img src="img/r3e1.jpg" alt="" class="img-responsive"></p>
+                    <p><img src="img/Screenshot1.png" alt="" class="img-responsive"></p>
                 </div>
             </div>
             <div class="row">
@@ -646,22 +646,15 @@
                 </div>
             </div>
 
-            <!-- <div id="group"
-                style="margin-left: 2.5%; margin-top: 10%; width: 19%; height: 40%; border: 2px solid black; border-radius: 10px;  float: right;">
+            <!-- <div id="profile"
+                style="margin-left: 2.5%; margin-top: 15%; width: 19%; height: 40%; border: 2px solid black; border-radius: 10px;  float: right;">
                 <center>
-                    <h2>Group</h2>
+                    <h2>Profile</h2>
                 </center>
                 <hr style="border-bottom: 2px solid green;">
 
-                <div id="creategroup">
-                    <input type="text" id="groupname" placeholder="Group_name"
-                        style="font-size: 15px; background-color: white ; border: 2px solid #765942; border-radius: 10px; position: static ; margin-left: 1%; margin-top: 0.3%; width: 170px; height: 30px;"><button
-                        id="broadcast_btn" style="float: right; margin-right: 2%;" class="chat_btn"
-                        onclick="creategroup()">Create</button>
-                </div>
-
-                <div id="group_list"
-                    style="width: 100%; height: 57%; font-size: 22px; margin-top: 2%; overflow: scroll;"></div>
+                <div id="profile_details"
+                    style="width: 100%; height: 57%; font-size: 22px; margin-top: 2%; overflow: auto;"></div>
             </div> -->
 
             <div id="send"
